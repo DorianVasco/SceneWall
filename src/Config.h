@@ -79,9 +79,16 @@ QString currentSceneCollectionKey();
 
 inline QString getCfgPath()
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-                   "/obs-studio/plugin_config/SceneWall/";
+    const QString base = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+                         "/obs-studio/plugin_config/";
+    const QString path = base + "scene-wall/";
     QDir().mkpath(path);
+
+    // Older builds used plugin_config/SceneWall; copy once, keep the original.
+    const QString oldPath = base + "SceneWall/tabs.json";
+    if (!QFile::exists(path + "tabs.json") && QFile::exists(oldPath))
+        QFile::copy(oldPath, path + "tabs.json");
+
     return path + "tabs.json";
 }
 

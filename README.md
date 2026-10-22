@@ -47,6 +47,12 @@ Everything below mirrors vMix's source list. The three items marked **(added by 
 - **Thumbnail frames** — every thumbnail is outlined with a thin 1px grey frame so scenes are visually separated. The active scene stands out with a thicker frame: red for the current Program scene, green for the current Preview scene in Studio Mode.
 - **Localization** — English, German, Polish, Ukrainian, Italian, Spanish and French. The default title of the **All** tab is translated too.
 
+## Changes in 1.7
+
+- Renamed the plugin bundle to `scene-wall` (OBS 34 layout: `plugins/scene-wall/scene-wall.dll`).
+- Dock position is restored after OBS finishes loading plugins.
+- Existing `plugin_config/SceneWall/tabs.json` is copied to `plugin_config/scene-wall/`.
+
 ## Changes in 1.6
 
 - Thumbnail size is stored per tab: each tab keeps its own Size slider value, Autosize applies to the active tab only, and switching tabs moves the slider to that tab's size. Old configs migrate automatically.
@@ -88,13 +94,13 @@ SceneWall only shows scenes and switches between them. It does not control sourc
 
 ### Release archive
 
-`SceneWall-1.6-OBS33-Windows-x64.zip` contains this layout:
+`scene-wall-1.7-OBS34-Windows-x64.zip` contains this layout:
 
 ```text
 README.md
 plugins/
-└── SceneWall/
-    ├── SceneWall.dll
+└── scene-wall/
+    ├── scene-wall.dll
     └── data/
         └── locale/*.ini
 ```
@@ -104,19 +110,19 @@ Extract archive contents into OBS root:
 - Installed OBS: `C:\ProgramData\obs-studio\`
 - Portable OBS: `<portable>\`
 
-Resulting plugin path is `plugins/SceneWall/SceneWall.dll`, with locale files beside it under `plugins/SceneWall/data/locale/`.
+Resulting plugin path is `plugins/scene-wall/scene-wall.dll`, with locale files under `plugins/scene-wall/data/locale/`. This layout is the only one OBS 34 loads; `obs-plugins\64bit` and `SceneWall\bin\64bit` are legacy.
 
 Restart OBS Studio after installation.
 
 Manual copy, installed OBS:
 
-1. Copy `SceneWall.dll` to `C:\ProgramData\obs-studio\plugins\SceneWall\`
-2. Copy the `locale` folder to `C:\ProgramData\obs-studio\plugins\SceneWall\data\`
+1. Copy `scene-wall.dll` to `C:\ProgramData\obs-studio\plugins\scene-wall\`
+2. Copy the `locale` folder to `C:\ProgramData\obs-studio\plugins\scene-wall\data\`
 
 Manual copy, portable OBS:
 
-1. Copy `SceneWall.dll` to `<portable>\plugins\SceneWall\`
-2. Copy the `locale` folder to `<portable>\plugins\SceneWall\data\`
+1. Copy `scene-wall.dll` to `<portable>\plugins\scene-wall\`
+2. Copy the `locale` folder to `<portable>\plugins\scene-wall\data\`
 
 SceneWall uses only libraries shipped with OBS (`obs.dll`, `obs-frontend-api.dll`, Qt6).
 
@@ -131,11 +137,11 @@ cmake --build build --config Release
 
 `OBS_QT_CMAKE_DIR` is optional; when given it is appended to `CMAKE_PREFIX_PATH`. Without it, CMake uses the Qt6 package from the default search path.
 
-The resulting `build/Release/SceneWall.dll` is the plugin. `cmake --install build --config Release` installs the OBS 33 bundle layout: `SceneWall.dll` next to `data/locale/*.ini` under `plugins/SceneWall`.
+The resulting `build/Release/scene-wall.dll` is the plugin. `cmake --install build --config Release` installs the OBS 34 bundle layout: `scene-wall.dll` next to `data/locale/*.ini` under `plugins/scene-wall`.
 
 ## Version
 
-The current version is **1.6**.
+The current version is **1.7**.
 
 ## License
 

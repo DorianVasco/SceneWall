@@ -70,9 +70,9 @@ TABS AND ASSIGNMENT
   visible even while browsing All.
 
 INSTALLATION
-1. Copy SceneWall.dll to C:/ProgramData/obs-studio/plugins/SceneWall/
-   and the locale folder to C:/ProgramData/obs-studio/plugins/SceneWall/data/
-   (portable OBS: <portable>/plugins/SceneWall/ with data/ next to the DLL).
+1. Copy scene-wall.dll to C:/ProgramData/obs-studio/plugins/scene-wall/
+   and the locale folder to C:/ProgramData/obs-studio/plugins/scene-wall/data/
+   (portable OBS: <portable>/plugins/scene-wall/ with data/ next to the DLL).
 2. Restart OBS Studio.
 
 SceneWall uses only libraries shipped with OBS (obs.dll, obs-frontend-api.dll,

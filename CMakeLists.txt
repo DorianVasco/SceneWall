@@ -36,7 +36,7 @@ add_library(SceneWall MODULE
 
 target_link_libraries(SceneWall PRIVATE obs.lib obs-frontend-api.lib Qt6::Widgets)
 
-set_target_properties(SceneWall PROPERTIES PREFIX "")
+set_target_properties(SceneWall PROPERTIES PREFIX "" OUTPUT_NAME "scene-wall")
 
 include(CTest)
 if(BUILD_TESTING)
@@ -50,8 +50,8 @@ if(BUILD_TESTING)
 endif()
 
 install(TARGETS SceneWall
-    RUNTIME DESTINATION "plugins/SceneWall"
-    LIBRARY DESTINATION "plugins/SceneWall")
+    RUNTIME DESTINATION "plugins/scene-wall"
+    LIBRARY DESTINATION "plugins/scene-wall")
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data/locale"
-    DESTINATION "plugins/SceneWall/data")
+    DESTINATION "plugins/scene-wall/data")
 
