@@ -79,7 +79,7 @@ SceneWall only shows scenes and switches between them. It does not control sourc
 | **Left click** on a thumbnail | Switch Program to that scene. With *Left click sends to Preview* enabled in Settings and Studio Mode on, cue it in Preview instead |
 | **Left drag** on a thumbnail | Reorder it inside the current tab |
 | **Right click** on a scene header | Collapse / expand that scene |
-| **Right click** on a thumbnail | In Studio Mode, set it as the Preview scene. With *Left click sends to Preview* enabled: open a menu with *Send to Program*, *Filters*, *Rename* |
+| **Right click** on a thumbnail | In Studio Mode, set it as the Preview scene. With *Left click sends to Preview* enabled: open a menu with *Send to Program* plus the OBS Scenes-dock entries: *Add scene*, *Duplicate*, *Rename*, *Remove*, *Filters*, *Copy / Paste Filters*, *Fullscreen / Windowed Projector*, *Screenshot*, *Show in Multiview* |
 | **Right click** on an empty panel area | Small menu: *Add scene*, *About* |
 | **CTRL + click** on a thumbnail | Plugin menu: *Assign to Tab*, *Remove from Tab*, *Collapse / Expand*, *Filters*, *Rename*, *Add scene* |
 

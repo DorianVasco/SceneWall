@@ -168,6 +168,8 @@ private slots:
     void onSceneDropped(const QString &sceneUuid, int index);
     void onSceneMenu(SceneThumbnailWidget *widget, QPoint globalPos);
     void onSceneQuickMenu(SceneThumbnailWidget *widget, QPoint globalPos);
+    void duplicateScene(obs_source_t *source);
+    void removeScene(obs_source_t *source);
     void onEmptyAreaMenu(QPoint globalPos);
     void renameScene(const QString &oldName);
     void addScene();
