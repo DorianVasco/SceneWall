@@ -415,6 +415,12 @@ void SceneThumbnailWidget::mousePressEvent(QMouseEvent *event)
             setCollapsed(!isCollapsed);
             return;
         }
+        // Click-to-Preview mode: right click opens the scene menu
+        // (Send to Program, Filters, Rename).
+        if (clickToPreview) {
+            emit quickMenuRequested(this, event->globalPosition().toPoint());
+            return;
+        }
         if (obs_frontend_preview_program_mode_active()) {
             obs_frontend_set_current_preview_scene(source);
             return;
@@ -422,7 +428,7 @@ void SceneThumbnailWidget::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    // Left press only arms a potential drag; Program switches on release.
+    // Left press only arms a potential drag; the scene switches on release.
 }
 
 void SceneThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
@@ -448,7 +454,7 @@ void SceneThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 void SceneThumbnailWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     // Press already handled right button and CTRL+click; release only
-    // switches Program for a plain left click that never became a drag.
+    // switches scenes for a plain left click that never became a drag.
     if (event->button() != Qt::LeftButton)
         return;
     if (event->modifiers() & Qt::ControlModifier)
@@ -456,7 +462,13 @@ void SceneThumbnailWidget::mouseReleaseEvent(QMouseEvent *event)
     if (dragStarted)
         return;
 
-    obs_frontend_set_current_scene(source);
+    // Click-to-Preview mode in Studio Mode: a left click cues the scene in
+    // Preview; Program changes only through the transition. Without Studio
+    // Mode there is no Preview, so the click always switches Program.
+    if (clickToPreview && obs_frontend_preview_program_mode_active())
+        obs_frontend_set_current_preview_scene(source);
+    else
+        obs_frontend_set_current_scene(source);
 }
 
 /* ------------------------------------------------------------------ */
@@ -563,6 +575,7 @@ SceneWallWidget::SceneWallWidget(QWidget *parent) : QDockWidget(parent)
     m_renderTimer = new QTimer(this);
     connect(m_renderTimer, &QTimer::timeout, this, &SceneWallWidget::onSchedulerTick);
 
+    SceneThumbnailWidget::clickToPreview = config.clickToPreview;
     loadTabs();
     updateIndicators();
 }
@@ -761,6 +774,8 @@ void SceneWallWidget::loadTabs()
             w->setThumbSize(tab.thumbSize);
             w->setBarColor(ownerColor.value(sceneUuid, allColor));
             connect(w, &SceneThumbnailWidget::menuRequested, this, &SceneWallWidget::onSceneMenu);
+            connect(w, &SceneThumbnailWidget::quickMenuRequested, this,
+                    &SceneWallWidget::onSceneQuickMenu);
             connect(w, &SceneThumbnailWidget::collapseToggled, this,
                     &SceneWallWidget::onCollapseToggled);
             container->flowLayout()->addWidget(w);
@@ -1046,6 +1061,22 @@ void SceneWallWidget::removeSceneFromTab(const QString &sceneUuid, const QString
     loadTabs();
 }
 
+void SceneWallWidget::onSceneQuickMenu(SceneThumbnailWidget *widget, QPoint globalPos)
+{
+    if (!widget)
+        return;
+
+    QMenu menu;
+    menu.addAction(obs_module_text("SendToProgram"),
+                   [widget]() { obs_frontend_set_current_scene(widget->sourcePointer()); });
+    menu.addSeparator();
+    menu.addAction(obs_module_text("Filters"),
+                   [widget]() { obs_frontend_open_source_filters(widget->sourcePointer()); });
+    menu.addAction(obs_module_text("Rename"),
+                   [this, name = widget->sceneName()]() { renameScene(name); });
+    menu.exec(globalPos);
+}
+
 void SceneWallWidget::onSceneMenu(SceneThumbnailWidget *widget, QPoint globalPos)
 {
     if (!widget)
@@ -1275,6 +1306,7 @@ void SceneWallWidget::openSettings()
         // The dialog has already written its own changes, so re-read them
         // instead of clobbering them with our stale in-memory copy.
         config = loadWallConfig();
+        SceneThumbnailWidget::clickToPreview = config.clickToPreview;
         loadTabs();
     }
 }
